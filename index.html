@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Outing Planner Pal 🍽️</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: #f7f8fc; color: #1a1a2e; min-height: 100vh; }
+    input, button, select { font-family: inherit; }
+    button { cursor: pointer; }
+
+    .field-label {
+      display: block; font-size: 11px; letter-spacing: 2px;
+      color: #6b7280; margin-bottom: 7px; text-transform: uppercase; font-weight: 600;
+    }
+    .text-input {
+      width: 100%; padding: 12px 14px; font-size: 15px;
+      background: #f7f8fc; border: 1.5px solid #e2e5f0;
+      border-radius: 10px; color: #1a1a2e; outline: none;
+      transition: border-color 0.2s;
+    }
+    .text-input:focus { border-color: #5b4de0; background: #fff; }
+    .text-input.error { border-color: #dc2626; }
+    .error-msg { color: #dc2626; font-size: 13px; margin-top: 5px; }
+
+    #loading-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      font-size: 15px; color: #6b7280;
+    }
+
+    /* NAME SCREEN */
+    #name-screen {
+      min-height: 100vh; display: flex; align-items: center;
+      justify-content: center; padding: 20px;
+    }
+    .name-card {
+      background: #fff; border: 1px solid #e2e5f0; border-radius: 24px;
+      padding: 48px 44px; max-width: 480px; width: 100%;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.04), 0 20px 48px rgba(91,77,224,0.08);
+      position: relative;
+    }
+    .name-card::before {
+      content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 2px;
+      background: linear-gradient(90deg, transparent, #7c6af7, transparent); border-radius: 2px;
+    }
+    .card-icon { font-size: 34px; text-align: center; margin-bottom: 8px; }
+    .card-title { font-size: 26px; font-weight: 700; text-align: center; letter-spacing: -0.5px; color: #1a1a2e; }
+    .card-subtitle { font-size: 14px; color: #6b7280; text-align: center; margin-top: 6px; margin-bottom: 32px; }
+    .pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      border-radius: 20px; padding: 3px 10px; font-size: 12px;
+      font-family: monospace; letter-spacing: 1px;
+    }
+    .pill-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+    .already-section { margin: 14px 0 18px; }
+    .already-label { font-size: 11px; color: #9ca3af; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+    .join-btn {
+      width: 100%; padding: 14px; font-size: 15px; font-weight: 600;
+      background: linear-gradient(135deg, #7c6af7, #5b4de0);
+      border: none; border-radius: 12px; color: #fff;
+      box-shadow: 0 4px 20px rgba(124,106,247,0.35);
+      transition: transform 0.15s, box-shadow 0.15s; margin-top: 14px;
+    }
+    .join-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(124,106,247,0.45); }
+    .share-hint { text-align: center; font-size: 12px; color: #b0b8cc; margin-top: 12px; }
+
+    /* SETTINGS MODAL */
+    .modal-backdrop {
+      display: none; position: fixed; inset: 0; background: rgba(15,15,30,0.45);
+      backdrop-filter: blur(3px); z-index: 100;
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: #fff; border-radius: 20px; padding: 36px 36px 28px;
+      max-width: 520px; width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15); position: relative;
+    }
+    .modal-title { font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+    .modal-subtitle { font-size: 13px; color: #6b7280; margin-bottom: 28px; }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      background: #f7f8fc; border: 1px solid #e2e5f0; border-radius: 8px;
+      padding: 4px 10px; font-size: 16px; color: #6b7280; line-height: 1;
+    }
+    .modal-close:hover { background: #eef0f8; }
+    .form-row { margin-bottom: 20px; }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    .modal-actions { display: flex; gap: 10px; margin-top: 28px; }
+    .btn-save {
+      flex: 1; padding: 13px; font-size: 14px; font-weight: 600;
+      background: linear-gradient(135deg, #7c6af7, #5b4de0);
+      border: none; border-radius: 10px; color: #fff;
+      box-shadow: 0 3px 14px rgba(91,77,224,0.3); transition: transform 0.12s;
+    }
+    .btn-save:hover { transform: translateY(-1px); }
+    .btn-cancel {
+      padding: 13px 20px; font-size: 14px; font-weight: 500;
+      background: transparent; border: 1.5px solid #e2e5f0;
+      border-radius: 10px; color: #6b7280;
+    }
+    .btn-cancel:hover { background: #f7f8fc; }
+    .reset-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid #f0f2fa; }
+    .reset-label { font-size: 12px; color: #9ca3af; margin-bottom: 10px; }
+    .btn-reset {
+      padding: 9px 16px; font-size: 13px; font-weight: 500;
+      background: transparent; border: 1.5px solid #fecaca;
+      border-radius: 8px; color: #dc2626; transition: background 0.15s;
+    }
+    .btn-reset:hover { background: #fef2f2; }
+    .warn-text { font-size: 12px; color: #9ca3af; margin-top: 8px; }
+
+    /* GRID SCREEN */
+    #grid-screen { display: none; max-width: 1100px; margin: 0 auto; padding: 28px 20px; }
+    .top-bar {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 20px; flex-wrap: wrap; gap: 14px;
+    }
+    .title-block { flex: 1; min-width: 0; }
+    .app-title { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+    .app-subtitle { font-size: 13px; color: #6b7280; margin-top: 3px; }
+    .top-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+    .top-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+    .icon-btn {
+      background: #fff; border: 1px solid #e2e5f0; border-radius: 8px;
+      padding: 6px 12px; font-size: 13px; color: #6b7280;
+      display: flex; align-items: center; gap: 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: background 0.12s, border-color 0.12s;
+    }
+    .icon-btn:hover { background: #f0f2fa; border-color: #c8cde6; }
+    .icon-btn.accent {
+      background: linear-gradient(135deg, #7c6af7, #5b4de0);
+      border-color: transparent; color: #fff;
+      box-shadow: 0 2px 10px rgba(91,77,224,0.25);
+    }
+    .icon-btn.accent:hover { opacity: 0.9; }
+    .sync-time { font-size: 11px; color: #b0b8cc; }
+
+    .participants-bar {
+      background: #fff; border: 1px solid #e2e5f0; border-radius: 14px;
+      padding: 14px 18px; margin-bottom: 16px;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .participants-count { font-size: 11px; color: #9ca3af; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+
+    .summary-bar {
+      background: #fff; border: 1px solid #e2e5f0; border-radius: 14px;
+      padding: 16px 20px; margin-bottom: 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .summary-title { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; color: #1a1a2e; margin-bottom: 8px; }
+    .perfect-slots { display: flex; flex-wrap: wrap; gap: 7px; }
+    .perfect-slot {
+      background: rgba(22,163,74,0.1); border: 1px solid rgba(22,163,74,0.3);
+      border-radius: 8px; padding: 5px 11px; font-size: 13px; color: #16a34a; font-weight: 500;
+    }
+
+    .legend { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #6b7280; }
+    .legend-dot { width: 13px; height: 13px; border-radius: 3px; }
+    .instructions { font-size: 12px; color: #9ca3af; margin-bottom: 16px; }
+    .instructions .green { color: #16a34a; font-weight: 600; }
+    .instructions .red   { color: #dc2626; font-weight: 600; }
+
+    /* GRID */
+    .grid-wrap { overflow-x: auto; }
+    .grid { display: grid; gap: 4px; min-width: 520px; }
+    .col-header { text-align: center; padding-bottom: 8px; }
+    .col-day { font-size: 10px; color: #9ca3af; letter-spacing: 1px; text-transform: uppercase; }
+    .col-date { font-size: 13px; font-weight: 600; color: #1a1a2e; }
+    .time-label {
+      display: flex; align-items: center; justify-content: flex-end;
+      padding-right: 10px; font-size: 11px; color: #9ca3af;
+      letter-spacing: 0.3px; white-space: nowrap;
+    }
+    .cell {
+      position: relative; border-radius: 8px; min-height: 52px;
+      border: 1px solid #e2e5f0; background: #fff;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      padding: 5px; overflow: hidden; cursor: pointer;
+    }
+    .cell:hover { border-color: #a89ff0; }
+    .cell.all-in  { background: rgba(22,163,74,0.1); border-color: #16a34a; box-shadow: 0 0 10px rgba(22,163,74,0.18); }
+    .cell.has-avail { background: rgba(22,163,74,0.05); border-color: rgba(22,163,74,0.22); }
+    .cell.has-mixed { background: rgba(217,119,6,0.04); border-color: rgba(217,119,6,0.18); }
+    .cell.all-out   { background: rgba(220,38,38,0.04); border-color: #fecaca; }
+    .cell-dots { display: flex; flex-wrap: wrap; gap: 2px; padding: 2px; }
+    .cell-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .cell-dot.unavail { background: transparent !important; opacity: 0.4; border-width: 1.5px; border-style: solid; }
+    .my-indicator { position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; border-radius: 50%; }
+    .all-in-banner {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: rgba(22,163,74,0.18); font-size: 8px;
+      text-align: center; color: #16a34a; letter-spacing: 1px;
+      padding: 2px 0; font-weight: 700; text-transform: uppercase;
+    }
+    .cell-overlay {
+      display: none; position: absolute; inset: 0;
+      align-items: center; justify-content: center; gap: 8px;
+      background: rgba(247,248,252,0.93); backdrop-filter: blur(4px);
+    }
+    .cell:hover .cell-overlay { display: flex; }
+    .action-btn {
+      width: 34px; height: 34px; border-radius: 50%; font-size: 14px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid; transition: all 0.15s;
+    }
+    .action-btn.green-btn { border-color: #16a34a; color: #16a34a; background: transparent; }
+    .action-btn.green-btn.active { background: #16a34a; color: #fff; box-shadow: 0 0 10px rgba(22,163,74,0.35); }
+    .action-btn.red-btn   { border-color: #dc2626; color: #dc2626; background: transparent; }
+    .action-btn.red-btn.active   { background: #dc2626; color: #fff; box-shadow: 0 0 10px rgba(220,38,38,0.35); }
+
+    .footer {
+      margin-top: 28px; padding-top: 18px; border-top: 1px solid #e2e5f0;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+    }
+    .footer-note { font-size: 11px; color: #b0b8cc; }
+
+    #toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: #1a1a2e; color: #fff; padding: 10px 20px; border-radius: 10px;
+      font-size: 13px; font-weight: 500; z-index: 200;
+      transition: transform 0.3s ease; pointer-events: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 600px) {
+      .name-card { padding: 32px 22px; }
+      #grid-screen { padding: 18px 12px; }
+      .modal { padding: 28px 22px 22px; }
+      .form-row-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="loading-screen">Loading...</div>
+
+<!-- NAME SCREEN -->
+<div id="name-screen" style="display:none">
+  <div class="name-card">
+    <div class="card-icon">🍽️</div>
+    <h1 class="card-title" id="card-title-text">Let's Make Plans</h1>
+    <p class="card-subtitle" id="card-subtitle-text">Loading...</p>
+    <label class="field-label" for="name-input">Your Name</label>
+    <input id="name-input" class="text-input" type="text" placeholder="e.g. Vlad" autocomplete="off" />
+    <p id="name-error" class="error-msg" style="display:none"></p>
+    <div id="already-section" class="already-section" style="display:none">
+      <p class="already-label">Already responded</p>
+      <div id="existing-pills" class="pills"></div>
+    </div>
+    <button class="join-btn" id="join-btn">View the Grid →</button>
+    <p class="share-hint">Selections are shared live with the group</p>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-backdrop" id="settings-modal">
+  <div class="modal">
+    <button class="modal-close" id="modal-close-btn">✕</button>
+    <div class="modal-title">⚙️ Event Settings</div>
+    <div class="modal-subtitle">Changes apply instantly for everyone in the group</div>
+    <div class="form-row">
+      <label class="field-label" for="s-title">Event Title</label>
+      <input class="text-input" id="s-title" type="text" placeholder="e.g. Let's Make Plans" />
+    </div>
+    <div class="form-row">
+      <label class="field-label" for="s-subtitle">Event Type / Description</label>
+      <input class="text-input" id="s-subtitle" type="text" placeholder="e.g. Dinner, Movie Night, Game Night..." />
+    </div>
+    <div class="form-row-2">
+      <div>
+        <label class="field-label" for="s-start-date">Start Date</label>
+        <input class="text-input" id="s-start-date" type="date" />
+      </div>
+      <div>
+        <label class="field-label" for="s-end-date">End Date</label>
+        <input class="text-input" id="s-end-date" type="date" />
+      </div>
+    </div>
+    <div class="form-row-2">
+      <div>
+        <label class="field-label" for="s-start-hour">Start Time</label>
+        <select class="text-input" id="s-start-hour"></select>
+      </div>
+      <div>
+        <label class="field-label" for="s-end-hour">End Time</label>
+        <select class="text-input" id="s-end-hour"></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="field-label" for="s-step">Time Slot Size</label>
+      <select class="text-input" id="s-step">
+        <option value="0.5">30 minutes</option>
+        <option value="1">1 hour</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" id="settings-cancel-btn">Cancel</button>
+      <button class="btn-save" id="settings-save-btn">Save for Everyone →</button>
+    </div>
+    <div class="reset-section">
+      <div class="reset-label">⚠️ Danger Zone</div>
+      <button class="btn-reset" id="reset-responses-btn">🗑 Clear All Responses</button>
+      <p class="warn-text">Removes all participant selections and names. Use when starting a fresh event.</p>
+    </div>
+  </div>
+</div>
+
+<!-- GRID SCREEN -->
+<div id="grid-screen">
+  <div class="top-bar">
+    <div class="title-block">
+      <div class="app-title" id="grid-title">Let's Make Plans</div>
+      <div class="app-subtitle" id="grid-subtitle"></div>
+    </div>
+    <div class="top-actions">
+      <div class="top-row">
+        <span style="font-size:13px;color:#6b7280">Viewing as</span>
+        <span id="viewer-pill"></span>
+        <button class="icon-btn" id="switch-btn">↩ Switch</button>
+        <button class="icon-btn accent" id="settings-btn">⚙️ Settings</button>
+      </div>
+      <span class="sync-time" id="sync-time"></span>
+    </div>
+  </div>
+
+  <div class="participants-bar">
+    <span class="participants-count" id="participants-count">0 people</span>
+    <div id="participants-pills" class="pills"></div>
+    <button class="icon-btn" id="refresh-btn" style="margin-left:auto">↻ Refresh</button>
+  </div>
+
+  <div class="summary-bar">
+    <div class="summary-title"><span id="summary-icon">📊</span><span id="summary-text">Collecting responses...</span></div>
+    <div class="perfect-slots" id="perfect-slots"></div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>Available</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>Can't make it</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e2e5f0"></div>No response</div>
+  </div>
+  <p class="instructions">
+    Hover a cell → <span class="green">✓</span> if you're free, <span class="red">✕</span> if you can't. Click again to clear.
+  </p>
+
+  <div class="grid-wrap">
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <div class="footer">
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>Available</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>Can't make it</div>
+    </div>
+    <span class="footer-note">Updates live in real-time</span>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const SUPABASE_URL  = 'https://ihzydveridhjmxjyqouc.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImloenlkdmVyaWRoam14anlxb3VjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjk3NjUsImV4cCI6MjA4ODY0NTc2NX0.U0UUT8pp76lubPq_b10Zov4NzYc3ZBl3kbAb2hr3RA4';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+const DEFAULTS = {
+  title:'Let\'s Make Plans', subtitle:'Dinner',
+  startDate:'2026-04-01', endDate:'2026-04-05',
+  startHour:18, endHour:22, step:0.5,
+};
+const HUES = ['#5b4de0','#16a34a','#dc2626','#d97706','#2563eb','#db2777','#0891b2','#ea580c','#7c3aed','#0d9488'];
+
+let myName='', participants={}, selections={}, config={...DEFAULTS};
+
+function getDates() {
+  const dates=[], last=new Date(config.endDate+'T00:00:00');
+  let cur=new Date(config.startDate+'T00:00:00');
+  while(cur<=last){dates.push(cur.toISOString().split('T')[0]);cur=new Date(cur.getTime()+86400000);}
+  return dates;
+}
+function getSlots() {
+  const slots=[];
+  for(let h=config.startHour;h<config.endHour;h+=config.step){
+    const hrs=Math.floor(h),mins=Math.round((h-hrs)*60);
+    slots.push({key:`${hrs}:${mins===0?'00':mins}`,label:`${hrs%12===0?12:hrs%12}:${mins===0?'00':mins} ${hrs<12?'AM':'PM'}`});
+  }
+  return slots;
+}
+function fmtDate(s){
+  const d=new Date(s+'T12:00:00');
+  return{day:d.toLocaleDateString('en-US',{weekday:'short'}),date:d.toLocaleDateString('en-US',{month:'short',day:'numeric'})};
+}
+function fmtDateRange(){
+  const s=new Date(config.startDate+'T12:00:00'),e=new Date(config.endDate+'T12:00:00');
+  const sm=s.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  const em=e.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  const sh=config.startHour%12===0?12:config.startHour%12,sp=config.startHour<12?'AM':'PM';
+  const eh=config.endHour%12===0?12:config.endHour%12,ep=config.endHour<12?'AM':'PM';
+  return`${config.subtitle} • ${sm}–${em} • ${sh} ${sp}–${eh} ${ep}`;
+}
+function cellKey(d,s){return`${d}__${s}`;}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function makePill(name,color){
+  return`<span class="pill" style="background:${color}22;border:1px solid ${color}55;color:${color}"><span class="pill-dot" style="background:${color}"></span>${esc(name)}</span>`;
+}
+function showToast(msg,ms=2500){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),ms);
+}
+
+async function fetchAll(){
+  const[pR,aR,cR]=await Promise.all([
+    sb.from('participants').select('*'),
+    sb.from('availability').select('*'),
+    sb.from('event_config').select('*').eq('id',1).maybeSingle(),
+  ]);
+  participants={};
+  (pR.data||[]).forEach(p=>{participants[p.name]={color:p.color};});
+  selections={};
+  (aR.data||[]).forEach(r=>{
+    if(!selections[r.participant_name])selections[r.participant_name]={};
+    selections[r.participant_name][r.cell_key]=r.status;
+  });
+  if(cR.data){
+    config={
+      title:cR.data.title??DEFAULTS.title, subtitle:cR.data.subtitle??DEFAULTS.subtitle,
+      startDate:cR.data.start_date??DEFAULTS.startDate, endDate:cR.data.end_date??DEFAULTS.endDate,
+      startHour:cR.data.start_hour??DEFAULTS.startHour, endHour:cR.data.end_hour??DEFAULTS.endHour,
+      step:cR.data.step??DEFAULTS.step,
+    };
+  }
+}
+
+async function upsertParticipant(name){
+  if(participants[name])return;
+  const color=HUES[Object.keys(participants).length%HUES.length];
+  await sb.from('participants').upsert({name,color},{onConflict:'name'});
+  participants[name]={color};
+}
+
+async function upsertSelection(name,key,status){
+  if(!selections[name])selections[name]={};
+  if(selections[name][key]===status){
+    await sb.from('availability').delete().eq('participant_name',name).eq('cell_key',key);
+    delete selections[name][key];
+  }else{
+    await sb.from('availability').upsert(
+      {participant_name:name,cell_key:key,status,updated_at:new Date().toISOString()},
+      {onConflict:'participant_name,cell_key'}
+    );
+    selections[name][key]=status;
+  }
+}
+
+async function saveConfig(cfg){
+  await sb.from('event_config').upsert({
+    id:1,title:cfg.title,subtitle:cfg.subtitle,
+    start_date:cfg.startDate,end_date:cfg.endDate,
+    start_hour:cfg.startHour,end_hour:cfg.endHour,
+    step:cfg.step,updated_at:new Date().toISOString(),
+  },{onConflict:'id'});
+  config={...cfg};
+}
+
+async function resetAll(){
+  await Promise.all([
+    sb.from('availability').delete().neq('participant_name','__never__'),
+    sb.from('participants').delete().neq('name','__never__'),
+  ]);
+  participants={};selections={};
+}
+
+function renderNameScreen(){
+  document.getElementById('loading-screen').style.display='none';
+  document.getElementById('grid-screen').style.display='none';
+  document.getElementById('name-screen').style.display='flex';
+  document.getElementById('card-title-text').textContent=config.title;
+  document.getElementById('card-subtitle-text').textContent=fmtDateRange();
+  const names=Object.keys(participants),sec=document.getElementById('already-section');
+  if(names.length>0){
+    sec.style.display='block';
+    document.getElementById('existing-pills').innerHTML=names.map((n,i)=>makePill(n,HUES[i%HUES.length])).join('');
+  }else{sec.style.display='none';}
+}
+
+function renderGrid(){
+  document.getElementById('loading-screen').style.display='none';
+  document.getElementById('name-screen').style.display='none';
+  document.getElementById('grid-screen').style.display='block';
+  const dates=getDates(),slots=getSlots();
+  const pNames=Object.keys(participants),total=pNames.length;
+  const myColor=participants[myName]?.color??HUES[0];
+
+  document.getElementById('grid-title').textContent=config.title;
+  document.getElementById('grid-subtitle').textContent=fmtDateRange();
+  document.getElementById('viewer-pill').innerHTML=makePill(myName,myColor);
+  document.getElementById('sync-time').textContent=`Synced ${new Date().toLocaleTimeString()}`;
+  document.getElementById('participants-count').textContent=`${total} ${total===1?'person':'people'}`;
+  document.getElementById('participants-pills').innerHTML=pNames.map((n,i)=>makePill(n,HUES[i%HUES.length])).join('');
+
+  const perfect=[];
+  dates.forEach(date=>slots.forEach(slot=>{
+    const key=cellKey(date,slot.key);
+    const av=pNames.filter(n=>selections[n]?.[key]==='green').length;
+    const un=pNames.filter(n=>selections[n]?.[key]==='red').length;
+    if(av===total&&total>=2&&un===0)perfect.push({date,slot});
+  }));
+  document.getElementById('summary-icon').textContent=perfect.length>0?'🎉':'📊';
+  document.getElementById('summary-text').textContent=perfect.length>0
+    ?`${perfect.length} slot${perfect.length>1?'s':''} where everyone is free!`
+    :`${total} ${total===1?'person has':'people have'} responded — keep collecting`;
+  document.getElementById('perfect-slots').innerHTML=perfect.map(({date,slot})=>{
+    const{day,date:d}=fmtDate(date);
+    return`<span class="perfect-slot">${day} ${d} @ ${slot.label}</span>`;
+  }).join('');
+
+  const grid=document.getElementById('grid');
+  grid.style.gridTemplateColumns=`80px repeat(${dates.length},1fr)`;
+  let html='<div></div>';
+  dates.forEach(date=>{
+    const{day,date:d}=fmtDate(date);
+    html+=`<div class="col-header"><div class="col-day">${day}</div><div class="col-date">${d}</div></div>`;
+  });
+  slots.forEach(slot=>{
+    html+=`<div class="time-label">${slot.label}</div>`;
+    dates.forEach(date=>{
+      const key=cellKey(date,slot.key);
+      const av=pNames.filter(n=>selections[n]?.[key]==='green');
+      const un=pNames.filter(n=>selections[n]?.[key]==='red');
+      const ms=selections[myName]?.[key];
+      const allIn=av.length===total&&total>=2;
+      const allOut=un.length===total&&total>=2;
+      const mixed=av.length>0&&un.length>0;
+      let cls='cell';
+      if(allIn)cls+=' all-in';else if(allOut)cls+=' all-out';
+      else if(mixed)cls+=' has-mixed';else if(av.length>0)cls+=' has-avail';
+      const dots=[
+        ...av.map(n=>{const i=pNames.indexOf(n);return`<div class="cell-dot" style="background:${HUES[i%HUES.length]}" title="${esc(n)}: Available"></div>`;}),
+        ...un.map(n=>{const i=pNames.indexOf(n);return`<div class="cell-dot unavail" style="border-color:${HUES[i%HUES.length]}" title="${esc(n)}: Can't make it"></div>`;})
+      ].join('');
+      html+=`<div class="${cls}" data-key="${key}">
+        <div class="cell-dots">${dots}</div>
+        ${ms?`<div class="my-indicator" style="background:${ms==='green'?'#16a34a':'#dc2626'}"></div>`:''}
+        ${allIn?'<div class="all-in-banner">ALL IN</div>':''}
+        <div class="cell-overlay">
+          <button class="action-btn green-btn ${ms==='green'?'active':''}" data-key="${key}" data-val="green">✓</button>
+          <button class="action-btn red-btn ${ms==='red'?'active':''}" data-key="${key}" data-val="red">✕</button>
+        </div>
+      </div>`;
+    });
+  });
+  grid.innerHTML=html;
+  grid.querySelectorAll('.action-btn').forEach(btn=>{
+    btn.addEventListener('click',async e=>{
+      e.stopPropagation();
+      await upsertSelection(myName,btn.dataset.key,btn.dataset.val);
+      renderGrid();
+    });
+  });
+}
+
+function populateHourSelects(){
+  ['s-start-hour','s-end-hour'].forEach(id=>{
+    const sel=document.getElementById(id);sel.innerHTML='';
+    for(let h=0;h<24;h++){
+      const lbl=`${h%12===0?12:h%12}:00 ${h<12?'AM':'PM'}`;
+      sel.innerHTML+=`<option value="${h}">${lbl}</option>`;
+    }
+  });
+}
+
+function openSettings(){
+  document.getElementById('s-title').value=config.title;
+  document.getElementById('s-subtitle').value=config.subtitle;
+  document.getElementById('s-start-date').value=config.startDate;
+  document.getElementById('s-end-date').value=config.endDate;
+  document.getElementById('s-start-hour').value=config.startHour;
+  document.getElementById('s-end-hour').value=config.endHour;
+  document.getElementById('s-step').value=config.step;
+  document.getElementById('settings-modal').classList.add('open');
+}
+function closeSettings(){document.getElementById('settings-modal').classList.remove('open');}
+
+async function saveSettings(){
+  const title=document.getElementById('s-title').value.trim();
+  const subtitle=document.getElementById('s-subtitle').value.trim();
+  const startDate=document.getElementById('s-start-date').value;
+  const endDate=document.getElementById('s-end-date').value;
+  const startHour=parseFloat(document.getElementById('s-start-hour').value);
+  const endHour=parseFloat(document.getElementById('s-end-hour').value);
+  const step=parseFloat(document.getElementById('s-step').value);
+  if(!title){showToast('Please enter a title');return;}
+  if(!startDate||!endDate){showToast('Please select both dates');return;}
+  if(startDate>endDate){showToast('Start date must be before end date');return;}
+  if(startHour>=endHour){showToast('Start time must be before end time');return;}
+  const btn=document.getElementById('settings-save-btn');
+  btn.textContent='Saving...';btn.disabled=true;
+  await saveConfig({title,subtitle,startDate,endDate,startHour,endHour,step});
+  btn.textContent='Save for Everyone →';btn.disabled=false;
+  closeSettings();showToast('✓ Settings saved for everyone!');
+  renderGrid();
+}
+
+function subscribeRealtime(){
+  sb.channel('planner-all')
+    .on('postgres_changes',{event:'*',schema:'public',table:'availability'},async()=>{
+      await fetchAll();if(myName)renderGrid();
+    })
+    .on('postgres_changes',{event:'*',schema:'public',table:'participants'},async()=>{
+      await fetchAll();if(myName)renderGrid();else renderNameScreen();
+    })
+    .on('postgres_changes',{event:'*',schema:'public',table:'event_config'},async()=>{
+      await fetchAll();if(myName)renderGrid();else renderNameScreen();
+      showToast('📅 Event settings updated!');
+    })
+    .subscribe();
+}
+
+async function boot(){
+  populateHourSelects();
+  await fetchAll();
+  subscribeRealtime();
+  renderNameScreen();
+
+  document.getElementById('join-btn').addEventListener('click',async()=>{
+    const inp=document.getElementById('name-input'),name=inp.value.trim();
+    if(!name){
+      inp.classList.add('error');
+      const e=document.getElementById('name-error');e.textContent='Please enter your name.';e.style.display='block';
+      return;
+    }
+    await upsertParticipant(name);myName=name;renderGrid();
+  });
+  document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('join-btn').click();});
+  document.getElementById('name-input').addEventListener('input',()=>{
+    document.getElementById('name-input').classList.remove('error');
+    document.getElementById('name-error').style.display='none';
+  });
+  document.getElementById('switch-btn').addEventListener('click',()=>{myName='';renderNameScreen();});
+  document.getElementById('refresh-btn').addEventListener('click',async()=>{await fetchAll();renderGrid();});
+  document.getElementById('settings-btn').addEventListener('click',openSettings);
+  document.getElementById('modal-close-btn').addEventListener('click',closeSettings);
+  document.getElementById('settings-cancel-btn').addEventListener('click',closeSettings);
+  document.getElementById('settings-save-btn').addEventListener('click',saveSettings);
+  document.getElementById('settings-modal').addEventListener('click',e=>{
+    if(e.target===document.getElementById('settings-modal'))closeSettings();
+  });
+  document.getElementById('reset-responses-btn').addEventListener('click',async()=>{
+    if(!confirm('Clear ALL responses and names? This cannot be undone.'))return;
+    await resetAll();myName='';showToast('🗑 All responses cleared');renderNameScreen();
+  });
+}
+
+boot();
+</script>
+</body>
+</html>
