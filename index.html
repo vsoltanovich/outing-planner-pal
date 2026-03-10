@@ -21,7 +21,7 @@
     .text-input.error { border-color: #dc2626; }
     .error-msg { color: #dc2626; font-size: 13px; margin-top: 5px; }
     .pills { display: flex; flex-wrap: wrap; gap: 6px; }
-    .pill { display: inline-flex; align-items: center; gap: 5px; border-radius: 20px; padding: 4px 11px; font-size: 12px; font-family: monospace; letter-spacing: 1px; }
+    .pill { display: inline-flex; align-items: center; gap: 5px; border-radius: 20px; padding: 4px 11px; font-size: 12px; font-family: monospace; }
     .pill-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
 
     /* ── LOADING ── */
@@ -30,154 +30,158 @@
     /* ── NAME SCREEN ── */
     #name-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; }
     .name-card { background: #fff; border: 1px solid #e2e5f0; border-radius: 20px; padding: 40px 32px; max-width: 440px; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.04), 0 20px 48px rgba(91,77,224,0.08); position: relative; }
-    .name-card::before { content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 2px; background: linear-gradient(90deg, transparent, #7c6af7, transparent); border-radius: 2px; }
+    .name-card::before { content:''; position:absolute; top:0; left:10%; right:10%; height:2px; background:linear-gradient(90deg,transparent,#7c6af7,transparent); border-radius:2px; }
     .card-icon { font-size: 36px; text-align: center; margin-bottom: 8px; }
     .card-title { font-size: 24px; font-weight: 700; text-align: center; letter-spacing: -0.5px; }
     .card-subtitle { font-size: 14px; color: #6b7280; text-align: center; margin-top: 6px; margin-bottom: 28px; line-height: 1.5; }
     .already-section { margin: 12px 0 16px; }
     .already-label { font-size: 11px; color: #9ca3af; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
-    .join-btn { width: 100%; padding: 16px; font-size: 16px; font-weight: 600; background: linear-gradient(135deg, #7c6af7, #5b4de0); border: none; border-radius: 12px; color: #fff; box-shadow: 0 4px 20px rgba(124,106,247,0.35); transition: transform 0.15s, box-shadow 0.15s; margin-top: 14px; }
-    .join-btn:active { transform: scale(0.98); }
+    .join-btn { width: 100%; padding: 16px; font-size: 16px; font-weight: 600; background: linear-gradient(135deg, #7c6af7, #5b4de0); border: none; border-radius: 12px; color: #fff; box-shadow: 0 4px 20px rgba(124,106,247,0.35); margin-top: 14px; transition: opacity 0.15s; }
+    .join-btn:active { opacity: 0.85; }
     .share-hint { text-align: center; font-size: 12px; color: #b0b8cc; margin-top: 12px; }
 
     /* ── SETTINGS MODAL ── */
-    .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(15,15,30,0.5); backdrop-filter: blur(3px); z-index: 200; align-items: flex-end; justify-content: center; padding: 0; }
-    .modal-backdrop.open { display: flex; }
-    .modal { background: #fff; border-radius: 20px 20px 0 0; padding: 28px 24px 40px; width: 100%; max-width: 540px; box-shadow: 0 -8px 40px rgba(0,0,0,0.12); position: relative; max-height: 92vh; overflow-y: auto; }
-    .modal-handle { width: 40px; height: 4px; background: #e2e5f0; border-radius: 2px; margin: 0 auto 20px; }
-    .modal-title { font-size: 17px; font-weight: 700; color: #1a1a2e; margin-bottom: 3px; }
-    .modal-subtitle { font-size: 13px; color: #6b7280; margin-bottom: 24px; }
-    .modal-close { position: absolute; top: 20px; right: 20px; background: #f7f8fc; border: 1px solid #e2e5f0; border-radius: 8px; padding: 4px 10px; font-size: 16px; color: #6b7280; line-height: 1; }
-    .form-row { margin-bottom: 18px; }
-    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
-    .modal-actions { display: flex; gap: 10px; margin-top: 24px; }
-    .btn-save { flex: 1; padding: 15px; font-size: 15px; font-weight: 600; background: linear-gradient(135deg, #7c6af7, #5b4de0); border: none; border-radius: 12px; color: #fff; box-shadow: 0 3px 14px rgba(91,77,224,0.3); }
-    .btn-save:active { opacity: 0.9; }
-    .btn-cancel { padding: 15px 20px; font-size: 15px; font-weight: 500; background: transparent; border: 1.5px solid #e2e5f0; border-radius: 12px; color: #6b7280; }
-    .reset-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid #f0f2fa; }
-    .reset-label { font-size: 12px; color: #9ca3af; margin-bottom: 10px; }
-    .btn-reset { width: 100%; padding: 13px; font-size: 14px; font-weight: 500; background: transparent; border: 1.5px solid #fecaca; border-radius: 10px; color: #dc2626; }
-    .warn-text { font-size: 12px; color: #9ca3af; margin-top: 8px; text-align: center; }
+    .modal-backdrop { display:none; position:fixed; inset:0; background:rgba(15,15,30,0.5); backdrop-filter:blur(3px); z-index:200; align-items:flex-end; justify-content:center; }
+    .modal-backdrop.open { display:flex; }
+    .modal { background:#fff; border-radius:20px 20px 0 0; padding:24px 22px 40px; width:100%; max-width:540px; max-height:92vh; overflow-y:auto; position:relative; box-shadow:0 -8px 40px rgba(0,0,0,0.12); }
+    .modal-handle { width:40px; height:4px; background:#e2e5f0; border-radius:2px; margin:0 auto 20px; }
+    .modal-title { font-size:17px; font-weight:700; margin-bottom:3px; }
+    .modal-subtitle { font-size:13px; color:#6b7280; margin-bottom:22px; }
+    .modal-close { position:absolute; top:18px; right:18px; background:#f7f8fc; border:1px solid #e2e5f0; border-radius:8px; padding:4px 10px; font-size:16px; color:#6b7280; line-height:1; }
+    .form-row { margin-bottom:16px; }
+    .form-row-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+    .modal-actions { display:flex; gap:10px; margin-top:22px; }
+    .btn-save { flex:1; padding:15px; font-size:15px; font-weight:600; background:linear-gradient(135deg,#7c6af7,#5b4de0); border:none; border-radius:12px; color:#fff; }
+    .btn-cancel { padding:15px 20px; font-size:15px; background:transparent; border:1.5px solid #e2e5f0; border-radius:12px; color:#6b7280; }
+    .reset-section { margin-top:20px; padding-top:20px; border-top:1px solid #f0f2fa; }
+    .reset-label { font-size:12px; color:#9ca3af; margin-bottom:10px; }
+    .btn-reset { width:100%; padding:13px; font-size:14px; background:transparent; border:1.5px solid #fecaca; border-radius:10px; color:#dc2626; }
+    .warn-text { font-size:12px; color:#9ca3af; margin-top:8px; text-align:center; }
 
-    /* ── GRID SCREEN ── */
-    #grid-screen { display: none; }
+    /* ── TOOLTIP ── */
+    .tooltip-box {
+      position: fixed; z-index: 500;
+      background: #1a1a2e; color: #fff;
+      border-radius: 12px; padding: 12px 16px;
+      font-size: 13px; line-height: 1.6;
+      max-width: 220px; min-width: 160px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      pointer-events: none;
+      opacity: 0; transition: opacity 0.15s;
+    }
+    .tooltip-box.visible { opacity: 1; }
+    .tooltip-yes { color: #86efac; font-weight: 600; }
+    .tooltip-no  { color: #9ca3af; }
+    .tooltip-section-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #6b7280; margin-top: 8px; margin-bottom: 2px; }
+    .tooltip-section-label:first-child { margin-top: 0; }
 
     /* ── MOBILE HEADER ── */
-    .mobile-header { background: #fff; border-bottom: 1px solid #e2e5f0; padding: 14px 16px 12px; position: sticky; top: 0; z-index: 50; }
-    .mh-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-    .mh-title { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
-    .mh-actions { display: flex; gap: 8px; }
-    .icon-btn { background: #f7f8fc; border: 1px solid #e2e5f0; border-radius: 8px; padding: 8px 12px; font-size: 13px; color: #6b7280; display: flex; align-items: center; gap: 4px; white-space: nowrap; }
-    .icon-btn.accent { background: linear-gradient(135deg, #7c6af7, #5b4de0); border-color: transparent; color: #fff; }
-    .icon-btn:active { opacity: 0.85; }
-    .mh-subtitle { font-size: 12px; color: #9ca3af; }
-    .mh-viewer { font-size: 12px; color: #6b7280; margin-top: 6px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    #grid-screen { display: none; }
+    .mobile-header { background:#fff; border-bottom:1px solid #e2e5f0; padding:12px 16px 10px; position:sticky; top:0; z-index:50; }
+    .mh-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:3px; }
+    .mh-title { font-size:17px; font-weight:700; letter-spacing:-0.3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:55vw; }
+    .mh-actions { display:flex; gap:7px; flex-shrink:0; }
+    .icon-btn { background:#f7f8fc; border:1px solid #e2e5f0; border-radius:8px; padding:8px 12px; font-size:13px; color:#6b7280; display:flex; align-items:center; gap:4px; white-space:nowrap; }
+    .icon-btn.accent { background:linear-gradient(135deg,#7c6af7,#5b4de0); border-color:transparent; color:#fff; }
+    .icon-btn:active { opacity:0.8; }
+    .mh-meta { font-size:11px; color:#9ca3af; margin-top:3px; }
+    .mh-viewer { font-size:12px; color:#6b7280; margin-top:5px; display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
 
-    /* ── DAY TABS (mobile) ── */
-    .day-tabs-wrap { background: #fff; border-bottom: 1px solid #e2e5f0; padding: 0 4px; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-    .day-tabs-wrap::-webkit-scrollbar { display: none; }
-    .day-tabs { display: inline-flex; gap: 2px; padding: 8px 8px; }
-    .day-tab { display: inline-flex; flex-direction: column; align-items: center; padding: 8px 14px; border-radius: 10px; border: 1.5px solid transparent; background: transparent; color: #6b7280; cursor: pointer; transition: all 0.15s; min-width: 56px; }
-    .day-tab .dt-day { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-    .day-tab .dt-date { font-size: 15px; font-weight: 700; margin-top: 1px; }
-    .day-tab .dt-dot { width: 5px; height: 5px; border-radius: 50%; background: #16a34a; margin-top: 4px; opacity: 0; transition: opacity 0.15s; }
-    .day-tab.has-perfect .dt-dot { opacity: 1; }
-    .day-tab.active { background: #5b4de0; border-color: #5b4de0; color: #fff; box-shadow: 0 2px 10px rgba(91,77,224,0.3); }
-    .day-tab.active .dt-dot { background: #a5f3c4; opacity: 1; }
+    /* ── DAY TABS ── */
+    .day-tabs-wrap { background:#fff; border-bottom:1px solid #e2e5f0; overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+    .day-tabs-wrap::-webkit-scrollbar { display:none; }
+    .day-tabs { display:inline-flex; gap:2px; padding:8px 10px; }
+    .day-tab { display:inline-flex; flex-direction:column; align-items:center; padding:8px 14px; border-radius:10px; border:1.5px solid transparent; background:transparent; color:#6b7280; min-width:58px; }
+    .day-tab .dt-day  { font-size:10px; text-transform:uppercase; letter-spacing:1px; font-weight:600; }
+    .day-tab .dt-date { font-size:15px; font-weight:700; margin-top:1px; }
+    .day-tab .dt-dot  { width:5px; height:5px; border-radius:50%; background:#16a34a; margin-top:4px; opacity:0; transition:opacity 0.15s; }
+    .day-tab.has-perfect .dt-dot { opacity:1; }
+    .day-tab.active { background:#5b4de0; border-color:#5b4de0; color:#fff; box-shadow:0 2px 10px rgba(91,77,224,0.3); }
+    .day-tab.active .dt-dot { background:#a5f3c4; opacity:1; }
 
     /* ── MOBILE SLOT LIST ── */
-    .mobile-body { padding: 12px 14px 80px; }
-    .mobile-summary { background: #fff; border: 1px solid #e2e5f0; border-radius: 14px; padding: 14px 16px; margin-bottom: 14px; }
-    .ms-title { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; margin-bottom: 6px; }
-    .perfect-slots { display: flex; flex-wrap: wrap; gap: 6px; }
-    .perfect-slot { background: rgba(22,163,74,0.1); border: 1px solid rgba(22,163,74,0.3); border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #16a34a; font-weight: 500; }
-    .participants-strip { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 14px; }
-    .p-count { font-size: 11px; color: #9ca3af; letter-spacing: 1px; text-transform: uppercase; }
+    .mobile-body { padding:12px 14px 80px; }
+    .mobile-summary { background:#fff; border:1px solid #e2e5f0; border-radius:14px; padding:14px 16px; margin-bottom:12px; }
+    .ms-title { display:flex; align-items:center; gap:8px; font-weight:600; font-size:14px; margin-bottom:6px; }
+    .perfect-slots { display:flex; flex-wrap:wrap; gap:6px; }
+    .perfect-slot { background:rgba(22,163,74,0.1); border:1px solid rgba(22,163,74,0.3); border-radius:8px; padding:5px 10px; font-size:12px; color:#16a34a; font-weight:500; }
+    .participants-strip { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:12px; }
+    .p-count { font-size:11px; color:#9ca3af; letter-spacing:1px; text-transform:uppercase; }
 
-    .slot-row { background: #fff; border: 1.5px solid #e2e5f0; border-radius: 14px; padding: 14px 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; transition: border-color 0.15s; }
-    .slot-row.all-in  { border-color: #16a34a; background: rgba(22,163,74,0.05); }
-    .slot-row.has-avail { border-color: rgba(22,163,74,0.3); }
-    .slot-row.has-mixed { border-color: rgba(217,119,6,0.3); }
-    .slot-row.all-out   { border-color: #fecaca; background: rgba(220,38,38,0.03); }
-    .slot-time { font-size: 15px; font-weight: 600; color: #1a1a2e; min-width: 72px; }
-    .slot-people { display: flex; flex-wrap: wrap; gap: 4px; flex: 1; }
-    .slot-dot { width: 11px; height: 11px; border-radius: 50%; }
-    .slot-dot.unavail { background: transparent !important; border-width: 1.5px; border-style: solid; opacity: 0.4; }
-    .slot-badge { font-size: 10px; font-weight: 700; color: #16a34a; letter-spacing: 0.5px; white-space: nowrap; }
-    .slot-actions { display: flex; gap: 8px; flex-shrink: 0; }
-    .slot-btn { width: 40px; height: 40px; border-radius: 50%; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid; transition: all 0.12s; flex-shrink: 0; }
-    .slot-btn.g { border-color: #16a34a; color: #16a34a; background: transparent; }
-    .slot-btn.g.active { background: #16a34a; color: #fff; box-shadow: 0 0 12px rgba(22,163,74,0.4); }
-    .slot-btn.r { border-color: #dc2626; color: #dc2626; background: transparent; }
-    .slot-btn.r.active { background: #dc2626; color: #fff; box-shadow: 0 0 12px rgba(220,38,38,0.35); }
-    .slot-btn:active { transform: scale(0.92); }
+    /* slot row */
+    .slot-row { background:#fff; border:1.5px solid #e2e5f0; border-radius:14px; padding:0; margin-bottom:8px; display:flex; align-items:stretch; overflow:hidden; transition:border-color 0.15s; }
+    .slot-row.all-in   { border-color:#16a34a; }
+    .slot-row.some-in  { border-color:rgba(22,163,74,0.35); }
+    .slot-row.none-in  { border-color:#e2e5f0; }
+    .slot-left { padding:14px 14px; flex:1; display:flex; flex-direction:column; justify-content:center; gap:4px; min-width:0; }
+    .slot-time { font-size:15px; font-weight:600; }
+    .slot-count { font-size:13px; color:#6b7280; }
+    .slot-count .count-num { font-weight:700; color:#16a34a; }
+    .slot-count .count-total { color:#9ca3af; }
+    .slot-all-badge { font-size:11px; color:#16a34a; font-weight:700; letter-spacing:0.5px; }
+    .slot-right { display:flex; align-items:center; padding:0 14px; flex-shrink:0; }
+    .check-btn { width:46px; height:46px; border-radius:50%; font-size:20px; font-weight:700; display:flex; align-items:center; justify-content:center; border:2px solid #d1d5db; color:#d1d5db; background:transparent; transition:all 0.15s; }
+    .check-btn.checked { background:#16a34a; border-color:#16a34a; color:#fff; box-shadow:0 0 14px rgba(22,163,74,0.4); }
+    .check-btn:active { transform:scale(0.9); }
 
-    /* ── DESKTOP GRID (768px+) ── */
+    /* info row — tap to expand on mobile */
+    .slot-info { display:none; padding:0 14px 12px; font-size:13px; line-height:1.7; border-top:1px solid #f0f2fa; }
+    .slot-info.open { display:block; }
+    .info-yes  { color:#16a34a; font-weight:600; }
+    .info-none { color:#9ca3af; }
+    .info-label { font-size:10px; letter-spacing:1px; text-transform:uppercase; color:#9ca3af; margin-bottom:2px; margin-top:8px; }
+    .info-label:first-child { margin-top:0; }
+    .slot-tap-hint { font-size:11px; color:#b0b8cc; margin-top:3px; }
+
+    /* ── DESKTOP ── */
     @media (min-width: 768px) {
-      .mobile-header { display: none; }
-      .day-tabs-wrap  { display: none; }
-      .mobile-body    { display: none; }
-      #grid-screen { max-width: 1100px; margin: 0 auto; padding: 28px 24px; }
-      .desktop-only { display: block !important; }
+      .mobile-header, .day-tabs-wrap, .mobile-body { display:none; }
+      #grid-screen { max-width:1100px; margin:0 auto; padding:28px 24px; }
+      .desktop-only { display:block !important; }
 
-      .top-bar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; flex-wrap: wrap; gap: 14px; }
-      .title-block { flex: 1; min-width: 0; }
-      .app-title { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
-      .app-subtitle { font-size: 13px; color: #6b7280; margin-top: 3px; }
-      .top-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
-      .top-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
-      .icon-btn { background: #fff; border: 1px solid #e2e5f0; padding: 6px 12px; font-size: 13px; color: #6b7280; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-      .icon-btn.accent { background: linear-gradient(135deg, #7c6af7, #5b4de0); border-color: transparent; color: #fff; }
-      .sync-time { font-size: 11px; color: #b0b8cc; }
+      .top-bar { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:14px; }
+      .title-block { flex:1; min-width:0; }
+      .app-title { font-size:24px; font-weight:700; letter-spacing:-0.5px; }
+      .app-subtitle { font-size:13px; color:#6b7280; margin-top:3px; }
+      .top-actions { display:flex; flex-direction:column; align-items:flex-end; gap:8px; }
+      .top-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+      .icon-btn { background:#fff; border:1px solid #e2e5f0; padding:6px 12px; font-size:13px; color:#6b7280; box-shadow:0 1px 3px rgba(0,0,0,0.05); }
+      .icon-btn.accent { background:linear-gradient(135deg,#7c6af7,#5b4de0); border-color:transparent; color:#fff; }
+      .sync-time { font-size:11px; color:#b0b8cc; }
 
-      .participants-bar { background: #fff; border: 1px solid #e2e5f0; border-radius: 14px; padding: 14px 18px; margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
-      .participants-count { font-size: 11px; color: #9ca3af; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
-      .summary-bar { background: #fff; border: 1px solid #e2e5f0; border-radius: 14px; padding: 16px 20px; margin-bottom: 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
-      .summary-title { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; margin-bottom: 8px; }
-      .legend { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
-      .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #6b7280; }
-      .legend-dot { width: 13px; height: 13px; border-radius: 3px; }
-      .instructions { font-size: 12px; color: #9ca3af; margin-bottom: 16px; }
-      .instructions .green { color: #16a34a; font-weight: 600; }
-      .instructions .red   { color: #dc2626; font-weight: 600; }
+      .participants-bar { background:#fff; border:1px solid #e2e5f0; border-radius:14px; padding:14px 18px; margin-bottom:16px; display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+      .participants-count { font-size:11px; color:#9ca3af; letter-spacing:1px; text-transform:uppercase; white-space:nowrap; }
+      .summary-bar { background:#fff; border:1px solid #e2e5f0; border-radius:14px; padding:16px 20px; margin-bottom:18px; }
+      .summary-title { display:flex; align-items:center; gap:8px; font-weight:600; font-size:14px; margin-bottom:8px; }
 
-      .grid-wrap { overflow-x: auto; }
-      .grid { display: grid; gap: 4px; min-width: 520px; }
-      .col-header { text-align: center; padding-bottom: 8px; }
-      .col-day  { font-size: 10px; color: #9ca3af; letter-spacing: 1px; text-transform: uppercase; }
-      .col-date { font-size: 13px; font-weight: 600; }
-      .time-label { display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; font-size: 11px; color: #9ca3af; white-space: nowrap; }
-      .cell { position: relative; border-radius: 8px; min-height: 52px; border: 1px solid #e2e5f0; background: #fff; transition: border-color 0.15s; padding: 5px; overflow: hidden; cursor: pointer; }
-      .cell:hover { border-color: #a89ff0; }
-      .cell.all-in   { background: rgba(22,163,74,0.1); border-color: #16a34a; box-shadow: 0 0 10px rgba(22,163,74,0.18); }
-      .cell.has-avail{ background: rgba(22,163,74,0.05); border-color: rgba(22,163,74,0.22); }
-      .cell.has-mixed{ background: rgba(217,119,6,0.04); border-color: rgba(217,119,6,0.18); }
-      .cell.all-out  { background: rgba(220,38,38,0.04); border-color: #fecaca; }
-      .cell-dots { display: flex; flex-wrap: wrap; gap: 2px; padding: 2px; }
-      .cell-dot { width: 10px; height: 10px; border-radius: 50%; }
-      .cell-dot.unavail { background: transparent !important; opacity: 0.4; border-width: 1.5px; border-style: solid; }
-      .my-indicator { position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; border-radius: 50%; }
-      .all-in-banner { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(22,163,74,0.18); font-size: 8px; text-align: center; color: #16a34a; letter-spacing: 1px; padding: 2px 0; font-weight: 700; text-transform: uppercase; }
-      .cell-overlay { display: none; position: absolute; inset: 0; align-items: center; justify-content: center; gap: 8px; background: rgba(247,248,252,0.93); backdrop-filter: blur(4px); }
-      .cell:hover .cell-overlay { display: flex; }
-      .action-btn { width: 34px; height: 34px; border-radius: 50%; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid; transition: all 0.15s; }
-      .action-btn.green-btn { border-color: #16a34a; color: #16a34a; background: transparent; }
-      .action-btn.green-btn.active { background: #16a34a; color: #fff; }
-      .action-btn.red-btn   { border-color: #dc2626; color: #dc2626; background: transparent; }
-      .action-btn.red-btn.active   { background: #dc2626; color: #fff; }
+      .grid-wrap { overflow-x:auto; }
+      .grid { display:grid; gap:4px; min-width:520px; }
+      .col-header { text-align:center; padding-bottom:8px; }
+      .col-day  { font-size:10px; color:#9ca3af; letter-spacing:1px; text-transform:uppercase; }
+      .col-date { font-size:13px; font-weight:600; }
+      .time-label { display:flex; align-items:center; justify-content:flex-end; padding-right:10px; font-size:11px; color:#9ca3af; white-space:nowrap; }
 
-      .footer { margin-top: 28px; padding-top: 18px; border-top: 1px solid #e2e5f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-      .footer-note { font-size: 11px; color: #b0b8cc; }
+      /* desktop cell */
+      .cell { position:relative; border-radius:10px; min-height:58px; border:1.5px solid #e2e5f0; background:#fff; padding:8px 10px; cursor:pointer; transition:border-color 0.15s, box-shadow 0.15s; display:flex; flex-direction:column; justify-content:space-between; }
+      .cell:hover { border-color:#a89ff0; box-shadow:0 2px 10px rgba(91,77,224,0.1); }
+      .cell.all-in  { border-color:#16a34a; background:rgba(22,163,74,0.07); box-shadow:0 0 12px rgba(22,163,74,0.15); }
+      .cell.some-in { border-color:rgba(22,163,74,0.3); background:rgba(22,163,74,0.03); }
+      .cell-count { font-size:18px; font-weight:700; color:#16a34a; line-height:1; }
+      .cell-count .denom { font-size:13px; color:#9ca3af; font-weight:500; }
+      .cell-my-check { font-size:13px; color:#16a34a; font-weight:700; position:absolute; top:6px; right:8px; }
+      .cell-all-label { font-size:8px; font-weight:700; color:#16a34a; letter-spacing:1px; text-transform:uppercase; text-align:center; padding: 2px 0 0; }
 
-      /* on desktop, modal centers */
-      .modal-backdrop { align-items: center; padding: 20px; }
-      .modal { border-radius: 20px; padding: 32px; max-height: 88vh; }
-      .modal-handle { display: none; }
+      .modal-backdrop { align-items:center; padding:20px; }
+      .modal { border-radius:20px; padding:32px; }
+      .modal-handle { display:none; }
+
+      .footer { margin-top:28px; padding-top:18px; border-top:1px solid #e2e5f0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+      .footer-note { font-size:11px; color:#b0b8cc; }
     }
 
     /* ── TOAST ── */
-    #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #1a1a2e; color: #fff; padding: 11px 22px; border-radius: 12px; font-size: 14px; font-weight: 500; z-index: 300; transition: transform 0.3s ease; pointer-events: none; box-shadow: 0 4px 20px rgba(0,0,0,0.2); white-space: nowrap; }
-    #toast.show { transform: translateX(-50%) translateY(0); }
+    #toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:#1a1a2e; color:#fff; padding:11px 22px; border-radius:12px; font-size:14px; font-weight:500; z-index:300; transition:transform 0.3s ease; pointer-events:none; box-shadow:0 4px 20px rgba(0,0,0,0.2); white-space:nowrap; }
+    #toast.show { transform:translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
@@ -190,15 +194,15 @@
     <div class="card-icon">🍽️</div>
     <h1 class="card-title" id="card-title-text">Let's Make Plans</h1>
     <p class="card-subtitle" id="card-subtitle-text">Loading...</p>
-    <label class="field-label" for="name-input">Your Name</label>
-    <input id="name-input" class="text-input" type="text" placeholder="e.g. Vlad" autocomplete="off" autocorrect="off" />
+    <label class="field-label">Your Name</label>
+    <input id="name-input" class="text-input" type="text" placeholder="e.g. Vlad" autocomplete="off" autocorrect="off" autocapitalize="words" />
     <p id="name-error" class="error-msg" style="display:none"></p>
     <div id="already-section" class="already-section" style="display:none">
       <p class="already-label">Already responded</p>
       <div id="existing-pills" class="pills"></div>
     </div>
     <button class="join-btn" id="join-btn">View the Grid →</button>
-    <p class="share-hint">Selections are shared live with the group</p>
+    <p class="share-hint">Tap your name above to rejoin, or type a new name</p>
   </div>
 </div>
 
@@ -209,14 +213,8 @@
     <button class="modal-close" id="modal-close-btn">✕</button>
     <div class="modal-title">⚙️ Event Settings</div>
     <div class="modal-subtitle">Changes apply instantly for everyone</div>
-    <div class="form-row">
-      <label class="field-label">Event Title</label>
-      <input class="text-input" id="s-title" type="text" placeholder="e.g. Let's Make Plans" />
-    </div>
-    <div class="form-row">
-      <label class="field-label">Event Type</label>
-      <input class="text-input" id="s-subtitle" type="text" placeholder="e.g. Dinner, Movie Night..." />
-    </div>
+    <div class="form-row"><label class="field-label">Event Title</label><input class="text-input" id="s-title" type="text" /></div>
+    <div class="form-row"><label class="field-label">Event Type</label><input class="text-input" id="s-subtitle" type="text" placeholder="e.g. Dinner, Movie Night..." /></div>
     <div class="form-row-2">
       <div><label class="field-label">Start Date</label><input class="text-input" id="s-start-date" type="date" /></div>
       <div><label class="field-label">End Date</label><input class="text-input" id="s-end-date" type="date" /></div>
@@ -225,12 +223,8 @@
       <div><label class="field-label">Start Time</label><select class="text-input" id="s-start-hour"></select></div>
       <div><label class="field-label">End Time</label><select class="text-input" id="s-end-hour"></select></div>
     </div>
-    <div class="form-row">
-      <label class="field-label">Slot Size</label>
-      <select class="text-input" id="s-step">
-        <option value="0.5">30 minutes</option>
-        <option value="1">1 hour</option>
-      </select>
+    <div class="form-row"><label class="field-label">Slot Size</label>
+      <select class="text-input" id="s-step"><option value="0.5">30 minutes</option><option value="1">1 hour</option></select>
     </div>
     <div class="modal-actions">
       <button class="btn-cancel" id="settings-cancel-btn">Cancel</button>
@@ -239,7 +233,7 @@
     <div class="reset-section">
       <div class="reset-label">⚠️ Danger Zone</div>
       <button class="btn-reset" id="reset-responses-btn">🗑 Clear All Responses</button>
-      <p class="warn-text">Removes all names and selections. Use when starting a new event.</p>
+      <p class="warn-text">Removes all names and check-ins. Use when starting a new event.</p>
     </div>
   </div>
 </div>
@@ -256,20 +250,14 @@
         <button class="icon-btn accent" id="settings-btn-m">⚙️</button>
       </div>
     </div>
-    <div class="mh-subtitle" id="mh-subtitle"></div>
-    <div class="mh-viewer">
-      <span>You:</span>
-      <span id="viewer-pill-m"></span>
-      <span id="sync-time-m" style="margin-left:auto;font-size:11px;color:#b0b8cc"></span>
-    </div>
+    <div class="mh-meta" id="mh-subtitle"></div>
+    <div class="mh-viewer">You: <span id="viewer-pill-m"></span><span id="sync-time-m" style="margin-left:auto;font-size:11px;color:#b0b8cc"></span></div>
   </div>
 
   <!-- DAY TABS -->
-  <div class="day-tabs-wrap">
-    <div class="day-tabs" id="day-tabs"></div>
-  </div>
+  <div class="day-tabs-wrap"><div class="day-tabs" id="day-tabs"></div></div>
 
-  <!-- MOBILE SLOT LIST -->
+  <!-- MOBILE BODY -->
   <div class="mobile-body">
     <div class="participants-strip" id="participants-strip-m"></div>
     <div class="mobile-summary" id="mobile-summary">
@@ -283,7 +271,7 @@
   <div class="desktop-only" style="display:none">
     <div class="top-bar">
       <div class="title-block">
-        <div class="app-title" id="grid-title-d">Let's Make Plans</div>
+        <div class="app-title" id="grid-title-d"></div>
         <div class="app-subtitle" id="grid-subtitle-d"></div>
       </div>
       <div class="top-actions">
@@ -302,26 +290,18 @@
       <button class="icon-btn" id="refresh-btn-d" style="margin-left:auto">↻ Refresh</button>
     </div>
     <div class="summary-bar">
-      <div class="summary-title"><span id="summary-icon-d">📊</span><span id="summary-text-d">Collecting...</span></div>
+      <div class="summary-title"><span id="summary-icon-d">📊</span><span id="summary-text-d"></span></div>
       <div class="perfect-slots" id="perfect-slots-d"></div>
     </div>
-    <div class="legend">
-      <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>Available</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>Can't make it</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#e2e5f0"></div>No response</div>
-    </div>
-    <p class="instructions">Hover a cell → <span class="green">✓</span> free, <span class="red">✕</span> can't make it. Click again to clear.</p>
+    <p style="font-size:12px;color:#9ca3af;margin-bottom:16px">Click a slot to check in ✓ — click again to remove. Hover to see who's in.</p>
     <div class="grid-wrap"><div class="grid" id="grid-d"></div></div>
-    <div class="footer">
-      <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>Available</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>Can't make it</div>
-      </div>
-      <span class="footer-note">Updates live in real-time</span>
-    </div>
+    <div class="footer"><span class="footer-note">Updates live in real-time</span></div>
   </div>
 
-</div><!-- end grid-screen -->
+</div>
+
+<!-- TOOLTIP (desktop hover) -->
+<div class="tooltip-box" id="tooltip"></div>
 
 <div id="toast"></div>
 
@@ -336,6 +316,8 @@ const HUES = ['#5b4de0','#16a34a','#dc2626','#d97706','#2563eb','#db2777','#0891
 let myName='', participants={}, selections={}, config={...DEFAULTS}, activeDate=null;
 
 // ── HELPERS ──────────────────────────────────────────────────────────────────
+function normName(n){ return n.trim().toLowerCase(); }
+
 function getDates(){
   const dates=[],last=new Date(config.endDate+'T00:00:00');
   let cur=new Date(config.startDate+'T00:00:00');
@@ -363,7 +345,7 @@ function fmtDateRange(){
   return`${config.subtitle} • ${sm}–${em} • ${sh}${sp}–${eh}${ep}`;
 }
 function cellKey(d,s){return`${d}__${s}`;}
-function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function makePill(name,color){
   return`<span class="pill" style="background:${color}22;border:1px solid ${color}55;color:${color}"><span class="pill-dot" style="background:${color}"></span>${esc(name)}</span>`;
 }
@@ -372,6 +354,11 @@ function showToast(msg,ms=2500){
   setTimeout(()=>t.classList.remove('show'),ms);
 }
 function isMobile(){return window.innerWidth<768;}
+
+// Look up stored display name (preserving original case) by normalized key
+function displayName(norm){
+  return Object.keys(participants).find(n=>normName(n)===norm) || norm;
+}
 
 // ── SUPABASE ─────────────────────────────────────────────────────────────────
 async function fetchAll(){
@@ -396,26 +383,44 @@ async function fetchAll(){
     };
   }
 }
+
+// Find existing participant name case-insensitively; returns stored name or null
+function findExistingName(input){
+  const norm=normName(input);
+  return Object.keys(participants).find(n=>normName(n)===norm)||null;
+}
+
 async function upsertParticipant(name){
-  if(participants[name])return;
+  // Use stored name if exists (case-insensitive match), otherwise use as typed
+  const existing=findExistingName(name);
+  if(existing){myName=existing;return;}
   const color=HUES[Object.keys(participants).length%HUES.length];
   await sb.from('participants').upsert({name,color},{onConflict:'name'});
   participants[name]={color};
+  myName=name;
 }
-async function upsertSelection(name,key,status){
+
+async function toggleSelection(name,key){
   if(!selections[name])selections[name]={};
-  if(selections[name][key]===status){
+  if(selections[name][key]==='green'){
+    // already checked — remove
     await sb.from('availability').delete().eq('participant_name',name).eq('cell_key',key);
     delete selections[name][key];
   }else{
-    await sb.from('availability').upsert({participant_name:name,cell_key:key,status,updated_at:new Date().toISOString()},{onConflict:'participant_name,cell_key'});
-    selections[name][key]=status;
+    // check in as available
+    await sb.from('availability').upsert(
+      {participant_name:name,cell_key:key,status:'green',updated_at:new Date().toISOString()},
+      {onConflict:'participant_name,cell_key'}
+    );
+    selections[name][key]='green';
   }
 }
+
 async function saveConfig(cfg){
   await sb.from('event_config').upsert({id:1,title:cfg.title,subtitle:cfg.subtitle,start_date:cfg.startDate,end_date:cfg.endDate,start_hour:cfg.startHour,end_hour:cfg.endHour,step:cfg.step,updated_at:new Date().toISOString()},{onConflict:'id'});
   config={...cfg};
 }
+
 async function resetAll(){
   await Promise.all([
     sb.from('availability').delete().neq('participant_name','__x__'),
@@ -424,54 +429,106 @@ async function resetAll(){
   participants={};selections={};
 }
 
-// ── PERFECT SLOTS ─────────────────────────────────────────────────────────────
+// ── SLOT DATA HELPER ──────────────────────────────────────────────────────────
+function slotData(key){
+  const pNames=Object.keys(participants);
+  const total=pNames.length;
+  const yesNames=pNames.filter(n=>selections[n]?.[key]==='green');
+  const noNames=pNames.filter(n=>!selections[n]?.[key]);
+  return{total,yesNames,noNames,allIn:yesNames.length===total&&total>=2};
+}
+
+function getPerfectDates(){
+  const dates=getDates(),slots=getSlots();
+  const perfectDates=new Set();
+  dates.forEach(date=>slots.forEach(slot=>{
+    const {total,yesNames}=slotData(cellKey(date,slot.key));
+    if(yesNames.length===total&&total>=2)perfectDates.add(date);
+  }));
+  return perfectDates;
+}
+
 function getPerfectSlots(){
-  const dates=getDates(),slots=getSlots(),pNames=Object.keys(participants),total=pNames.length;
-  const perfect=[];
-  if(total<2)return perfect;
+  const dates=getDates(),slots=getSlots(),perfect=[];
   dates.forEach(date=>slots.forEach(slot=>{
     const key=cellKey(date,slot.key);
-    const av=pNames.filter(n=>selections[n]?.[key]==='green').length;
-    const un=pNames.filter(n=>selections[n]?.[key]==='red').length;
-    if(av===total&&un===0)perfect.push({date,slot});
+    const{total,yesNames}=slotData(key);
+    if(yesNames.length===total&&total>=2)perfect.push({date,slot});
   }));
   return perfect;
 }
 
-// ── RENDER NAME SCREEN ───────────────────────────────────────────────────────
+// ── TOOLTIP (desktop) ────────────────────────────────────────────────────────
+const ttEl=document.getElementById?document.getElementById('tooltip'):null;
+let ttHideTimer=null;
+
+function showTooltip(e,key){
+  if(!ttEl)return;
+  const{yesNames,noNames}=slotData(key);
+  let html='';
+  if(yesNames.length>0){
+    html+=`<div class="tooltip-section-label">✓ Available (${yesNames.length})</div>`;
+    yesNames.forEach(n=>{html+=`<div class="tooltip-yes">• ${esc(n)}</div>`;});
+  }
+  if(noNames.length>0){
+    html+=`<div class="tooltip-section-label">No response (${noNames.length})</div>`;
+    noNames.forEach(n=>{html+=`<div class="tooltip-no">• ${esc(n)}</div>`;});
+  }
+  if(!html)html='<div class="tooltip-no">No responses yet</div>';
+  ttEl.innerHTML=html;
+  positionTooltip(e);
+  ttEl.classList.add('visible');
+}
+function positionTooltip(e){
+  if(!ttEl)return;
+  const x=e.clientX+14, y=e.clientY-10;
+  const w=ttEl.offsetWidth||220, h=ttEl.offsetHeight||100;
+  ttEl.style.left=Math.min(x,window.innerWidth-w-8)+'px';
+  ttEl.style.top=Math.max(8,Math.min(y,window.innerHeight-h-8))+'px';
+}
+function hideTooltip(){if(ttEl)ttEl.classList.remove('visible');}
+
+// ── RENDER NAME SCREEN ────────────────────────────────────────────────────────
 function renderNameScreen(){
   document.getElementById('loading-screen').style.display='none';
   document.getElementById('grid-screen').style.display='none';
   document.getElementById('name-screen').style.display='flex';
   document.getElementById('card-title-text').textContent=config.title;
   document.getElementById('card-subtitle-text').textContent=fmtDateRange();
-  const names=Object.keys(participants),sec=document.getElementById('already-section');
+  const names=Object.keys(participants);
+  const sec=document.getElementById('already-section');
   if(names.length>0){
     sec.style.display='block';
-    document.getElementById('existing-pills').innerHTML=names.map((n,i)=>makePill(n,HUES[i%HUES.length])).join('');
+    document.getElementById('existing-pills').innerHTML=names.map((n,i)=>
+      `<span class="pill" style="background:${HUES[i%HUES.length]}22;border:1px solid ${HUES[i%HUES.length]}55;color:${HUES[i%HUES.length]};cursor:pointer" data-name="${esc(n)}">
+        <span class="pill-dot" style="background:${HUES[i%HUES.length]}"></span>${esc(n)}
+      </span>`
+    ).join('');
+    // clicking a pill fills the name input
+    document.getElementById('existing-pills').querySelectorAll('.pill').forEach(p=>{
+      p.addEventListener('click',()=>{
+        document.getElementById('name-input').value=p.dataset.name;
+        document.getElementById('join-btn').click();
+      });
+    });
   }else{sec.style.display='none';}
 }
 
-// ── RENDER MOBILE ────────────────────────────────────────────────────────────
+// ── RENDER MOBILE ─────────────────────────────────────────────────────────────
 function renderMobile(){
   const dates=getDates(),slots=getSlots();
   const pNames=Object.keys(participants),total=pNames.length;
   const myColor=participants[myName]?.color??HUES[0];
   const perfect=getPerfectSlots();
-  const perfectDates=new Set(perfect.map(p=>p.date));
+  const perfectDates=getPerfectDates();
 
-  // header
   document.getElementById('mh-title').textContent=config.title;
   document.getElementById('mh-subtitle').textContent=fmtDateRange();
   document.getElementById('viewer-pill-m').innerHTML=makePill(myName,myColor);
   document.getElementById('sync-time-m').textContent=`Synced ${new Date().toLocaleTimeString()}`;
-
-  // participants
   document.getElementById('participants-strip-m').innerHTML=
     `<span class="p-count">${total} ${total===1?'person':'people'}</span>`+
     pNames.map((n,i)=>makePill(n,HUES[i%HUES.length])).join('');
-
-  // summary
   document.getElementById('ms-icon').textContent=perfect.length>0?'🎉':'📊';
   document.getElementById('ms-text').textContent=perfect.length>0
     ?`${perfect.length} slot${perfect.length>1?'s':''} where everyone is free!`
@@ -481,57 +538,63 @@ function renderMobile(){
     return`<span class="perfect-slot">${day} ${d} @ ${slot.label}</span>`;
   }).join('');
 
-  // ensure activeDate is valid
   if(!activeDate||!dates.includes(activeDate))activeDate=dates[0];
 
   // day tabs
   const tabsEl=document.getElementById('day-tabs');
   tabsEl.innerHTML=dates.map(date=>{
     const{day,date:d}=fmtDate(date);
-    const hasPerfect=perfectDates.has(date);
-    return`<button class="day-tab ${date===activeDate?'active':''} ${hasPerfect?'has-perfect':''}" data-date="${date}">
-      <span class="dt-day">${day}</span>
-      <span class="dt-date">${d}</span>
-      <span class="dt-dot"></span>
+    return`<button class="day-tab ${date===activeDate?'active':''} ${perfectDates.has(date)?'has-perfect':''}" data-date="${date}">
+      <span class="dt-day">${day}</span><span class="dt-date">${d}</span><span class="dt-dot"></span>
     </button>`;
   }).join('');
   tabsEl.querySelectorAll('.day-tab').forEach(tab=>{
     tab.addEventListener('click',()=>{activeDate=tab.dataset.date;renderMobile();});
   });
 
-  // slot list for active date
+  // slot list
   const slotList=document.getElementById('slot-list');
   slotList.innerHTML=slots.map(slot=>{
     const key=cellKey(activeDate,slot.key);
-    const av=pNames.filter(n=>selections[n]?.[key]==='green');
-    const un=pNames.filter(n=>selections[n]?.[key]==='red');
-    const ms=selections[myName]?.[key];
-    const allIn=av.length===total&&total>=2;
-    const allOut=un.length===total&&total>=2;
-    const mixed=av.length>0&&un.length>0;
-    let cls='slot-row';
-    if(allIn)cls+=' all-in';else if(allOut)cls+=' all-out';
-    else if(mixed)cls+=' has-mixed';else if(av.length>0)cls+=' has-avail';
+    const{total:tot,yesNames,noNames,allIn}=slotData(key);
+    const myChecked=selections[myName]?.[key]==='green';
+    const cls='slot-row '+(allIn?'all-in':yesNames.length>0?'some-in':'none-in');
 
-    const dots=[
-      ...av.map(n=>{const i=pNames.indexOf(n);return`<div class="slot-dot" style="background:${HUES[i%HUES.length]}" title="${esc(n)}"></div>`;}),
-      ...un.map(n=>{const i=pNames.indexOf(n);return`<div class="slot-dot unavail" style="border-color:${HUES[i%HUES.length]}" title="${esc(n)}"></div>`;})
-    ].join('');
+    const yesHtml=yesNames.length>0
+      ?`<div class="info-label">✓ Available (${yesNames.length})</div>`+yesNames.map(n=>`<span class="info-yes">• ${esc(n)}</span><br>`).join('')
+      :'';
+    const noHtml=noNames.length>0
+      ?`<div class="info-label">No response (${noNames.length})</div>`+noNames.map(n=>`<span class="info-none">• ${esc(n)}</span><br>`).join('')
+      :'';
 
     return`<div class="${cls}">
-      <div class="slot-time">${slot.label}</div>
-      <div class="slot-people">${dots}${allIn?'<span class="slot-badge">ALL IN 🎉</span>':''}</div>
-      <div class="slot-actions">
-        <button class="slot-btn g ${ms==='green'?'active':''}" data-key="${key}" data-val="green">✓</button>
-        <button class="slot-btn r ${ms==='red'?'active':''}" data-key="${key}" data-val="red">✕</button>
+      <div style="display:flex;align-items:center">
+        <div class="slot-left" data-expand="${key}">
+          <div class="slot-time">${slot.label}</div>
+          <div class="slot-count">
+            <span class="count-num">${yesNames.length}</span><span class="count-total">/${tot}</span> available
+            ${allIn?'<span class="slot-all-badge"> 🎉 ALL IN</span>':''}
+          </div>
+          <div class="slot-tap-hint">Tap to see who ↓</div>
+        </div>
+        <div class="slot-right">
+          <button class="check-btn ${myChecked?'checked':''}" data-key="${key}">✓</button>
+        </div>
       </div>
+      <div class="slot-info" id="info-${key}">${yesHtml}${noHtml||'<span class="info-none">No responses yet</span>'}</div>
     </div>`;
   }).join('');
 
-  slotList.querySelectorAll('.slot-btn').forEach(btn=>{
+  slotList.querySelectorAll('.check-btn').forEach(btn=>{
     btn.addEventListener('click',async()=>{
-      await upsertSelection(myName,btn.dataset.key,btn.dataset.val);
+      await toggleSelection(myName,btn.dataset.key);
       renderMobile();
+    });
+  });
+  slotList.querySelectorAll('[data-expand]').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const info=document.getElementById('info-'+el.dataset.expand);
+      if(info)info.classList.toggle('open');
     });
   });
 }
@@ -569,37 +632,28 @@ function renderDesktop(){
     html+=`<div class="time-label">${slot.label}</div>`;
     dates.forEach(date=>{
       const key=cellKey(date,slot.key);
-      const av=pNames.filter(n=>selections[n]?.[key]==='green');
-      const un=pNames.filter(n=>selections[n]?.[key]==='red');
-      const ms=selections[myName]?.[key];
-      const allIn=av.length===total&&total>=2;
-      const allOut=un.length===total&&total>=2;
-      const mixed=av.length>0&&un.length>0;
-      let cls='cell';
-      if(allIn)cls+=' all-in';else if(allOut)cls+=' all-out';
-      else if(mixed)cls+=' has-mixed';else if(av.length>0)cls+=' has-avail';
-      const dots=[
-        ...av.map(n=>{const i=pNames.indexOf(n);return`<div class="cell-dot" style="background:${HUES[i%HUES.length]}" title="${esc(n)}"></div>`;}),
-        ...un.map(n=>{const i=pNames.indexOf(n);return`<div class="cell-dot unavail" style="border-color:${HUES[i%HUES.length]}" title="${esc(n)}"></div>`;})
-      ].join('');
-      html+=`<div class="${cls}">
-        <div class="cell-dots">${dots}</div>
-        ${ms?`<div class="my-indicator" style="background:${ms==='green'?'#16a34a':'#dc2626'}"></div>`:''}
-        ${allIn?'<div class="all-in-banner">ALL IN</div>':''}
-        <div class="cell-overlay">
-          <button class="action-btn green-btn ${ms==='green'?'active':''}" data-key="${key}" data-val="green">✓</button>
-          <button class="action-btn red-btn ${ms==='red'?'active':''}" data-key="${key}" data-val="red">✕</button>
-        </div>
-      </div>`;
+      const{total:tot,yesNames,allIn}=slotData(key);
+      const myChecked=selections[myName]?.[key]==='green';
+      let cls='cell '+(allIn?'all-in':yesNames.length>0?'some-in':'');
+      const countHtml=tot>0
+        ?`<div class="cell-count">${yesNames.length}<span class="denom">/${tot}</span></div>`
+        :'<div class="cell-count" style="color:#d1d5db">—</div>';
+      const allLabel=allIn?'<div class="cell-all-label">ALL IN 🎉</div>':'';
+      const myMark=myChecked?`<div class="cell-my-check">✓</div>`:'';
+      html+=`<div class="${cls}" data-key="${key}">${countHtml}${allLabel}${myMark}</div>`;
     });
   });
   grid.innerHTML=html;
-  grid.querySelectorAll('.action-btn').forEach(btn=>{
-    btn.addEventListener('click',async e=>{
-      e.stopPropagation();
-      await upsertSelection(myName,btn.dataset.key,btn.dataset.val);
+
+  grid.querySelectorAll('.cell').forEach(cell=>{
+    const key=cell.dataset.key;
+    cell.addEventListener('click',async()=>{
+      await toggleSelection(myName,key);
       renderDesktop();
     });
+    cell.addEventListener('mouseenter',e=>showTooltip(e,key));
+    cell.addEventListener('mousemove',e=>positionTooltip(e));
+    cell.addEventListener('mouseleave',()=>hideTooltip());
   });
 }
 
@@ -607,16 +661,14 @@ function renderGrid(){
   document.getElementById('loading-screen').style.display='none';
   document.getElementById('name-screen').style.display='none';
   document.getElementById('grid-screen').style.display='block';
-  if(isMobile()) renderMobile(); else renderDesktop();
+  if(isMobile())renderMobile(); else renderDesktop();
 }
 
 // ── SETTINGS ─────────────────────────────────────────────────────────────────
 function populateHourSelects(){
   ['s-start-hour','s-end-hour'].forEach(id=>{
     const sel=document.getElementById(id);sel.innerHTML='';
-    for(let h=0;h<24;h++){
-      sel.innerHTML+=`<option value="${h}">${h%12===0?12:h%12}:00 ${h<12?'AM':'PM'}</option>`;
-    }
+    for(let h=0;h<24;h++)sel.innerHTML+=`<option value="${h}">${h%12===0?12:h%12}:00 ${h<12?'AM':'PM'}</option>`;
   });
 }
 function openSettings(){
@@ -666,25 +718,31 @@ async function boot(){
   subscribeRealtime();
   renderNameScreen();
 
-  // name screen
   document.getElementById('join-btn').addEventListener('click',async()=>{
-    const inp=document.getElementById('name-input'),name=inp.value.trim();
-    if(!name){inp.classList.add('error');const e=document.getElementById('name-error');e.textContent='Please enter your name.';e.style.display='block';return;}
-    await upsertParticipant(name);myName=name;activeDate=null;renderGrid();
+    const inp=document.getElementById('name-input');
+    const name=inp.value.trim();
+    if(!name){
+      inp.classList.add('error');
+      const e=document.getElementById('name-error');
+      e.textContent='Please enter your name.';e.style.display='block';
+      return;
+    }
+    await upsertParticipant(name); // sets myName internally
+    activeDate=null;
+    renderGrid();
   });
   document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('join-btn').click();});
-  document.getElementById('name-input').addEventListener('input',()=>{document.getElementById('name-input').classList.remove('error');document.getElementById('name-error').style.display='none';});
+  document.getElementById('name-input').addEventListener('input',()=>{
+    document.getElementById('name-input').classList.remove('error');
+    document.getElementById('name-error').style.display='none';
+  });
 
-  // mobile controls
   document.getElementById('switch-btn-m').addEventListener('click',()=>{myName='';renderNameScreen();});
   document.getElementById('settings-btn-m').addEventListener('click',openSettings);
-
-  // desktop controls
   document.getElementById('switch-btn-d').addEventListener('click',()=>{myName='';renderNameScreen();});
   document.getElementById('settings-btn-d').addEventListener('click',openSettings);
   document.getElementById('refresh-btn-d').addEventListener('click',async()=>{await fetchAll();renderGrid();});
 
-  // modal
   document.getElementById('modal-close-btn').addEventListener('click',closeSettings);
   document.getElementById('settings-cancel-btn').addEventListener('click',closeSettings);
   document.getElementById('settings-save-btn').addEventListener('click',saveSettings);
@@ -694,7 +752,6 @@ async function boot(){
     await resetAll();myName='';showToast('🗑 All responses cleared');renderNameScreen();
   });
 
-  // re-render on resize
   window.addEventListener('resize',()=>{if(myName)renderGrid();});
 }
 
